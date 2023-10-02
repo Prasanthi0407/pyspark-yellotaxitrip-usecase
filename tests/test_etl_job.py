@@ -7,7 +7,7 @@ job defined in etl_job.py. It makes use of a local version of PySpark
 that is bundled with the PySpark package.
 """
 import unittest
-
+import json
 from dependencies.spark import start_spark
 from jobs.etl_job import transform_data
 
@@ -19,9 +19,9 @@ class SparkETLTests(unittest.TestCase):
     def setUp(self):
         """Start Spark, define config and path to test data
         """
-       # self.config = json.loads("""{"steps_per_floor": 21}""")
+        self.config = json.loads("""{"startDate": "2020-01-01"}""")
         self.spark, *_ = start_spark()
-        self.test_data_path = 'tests/test_data/'
+        self.test_data_path = 'test_data/'
 
     def tearDown(self):
         """Stop Spark
@@ -39,36 +39,25 @@ class SparkETLTests(unittest.TestCase):
         input_data = (
             self.spark
             .read
-            .parquet(self.test_data_path + 'employees'))
+            .parquet(self.test_data_path + 'input'))
 
         expected_data = (
             self.spark
             .read
-            .parquet(self.test_data_path + 'employees_report'))
+            .parquet(self.test_data_path + 'output'))
 
         expected_cols = len(expected_data.columns)
         expected_rows = expected_data.count()
-        expected_avg_steps = (
-            expected_data
-            .agg(mean('steps_to_desk').alias('avg_steps_to_desk'))
-            .collect()[0]
-            ['avg_steps_to_desk'])
 
         # act
-        data_transformed = transform_data(input_data, 21)
+        data_transformed = transform_data(input_data)
 
         cols = len(expected_data.columns)
         rows = expected_data.count()
-        avg_steps = (
-            expected_data
-            .agg(mean('steps_to_desk').alias('avg_steps_to_desk'))
-            .collect()[0]
-            ['avg_steps_to_desk'])
 
         # assert
         self.assertEqual(expected_cols, cols)
         self.assertEqual(expected_rows, rows)
-        self.assertEqual(expected_avg_steps, avg_steps)
         self.assertTrue([col in expected_data.columns
                          for col in data_transformed.columns])
 
