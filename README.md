@@ -25,5 +25,4 @@ Jdbc Mysql 8.0.33
 
 ##### Test cases
 
-Sample Py test created to check the column counts and row counts from expected and actual transformed data frame
-![image](https://github.com/Prasanthi0407/pyspark-yellotaxitrip-usecase/assets/115220877/d1762475-eacd-4fec-ab03-3f43a70eae30)
+Sample Py test created to check the column counts and row counts from expected and actual transformed data frame.
