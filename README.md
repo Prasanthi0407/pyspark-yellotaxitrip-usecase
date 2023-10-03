@@ -17,7 +17,6 @@ Jdbc Mysql 8.0.33
 
  Local Execution
 
-
 1.	Mentioned the software versions above, ensure to have the same versions available to avoid any version dependency issues.
 2.	To support store the output data in mysql, have to place the installed mysql jar in to spark installed location (ex: homeware\spark-3.0.3-bin-hadoop2.7\jars).
 3.	Setup PYTHONPATH in environment variables (ex: %SPARK_HOME%\python;%SPARK_HOME%\python\lib\py4j-<specific version>-src.zip;%PYTHONPATH%) 
